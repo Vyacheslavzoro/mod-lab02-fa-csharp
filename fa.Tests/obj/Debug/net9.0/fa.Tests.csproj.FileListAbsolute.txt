@@ -1,0 +1,7 @@
+C:\Моделирование информационных процессов и систем\Lab 2\fa.Tests\bin\Debug\net9.0\.msCoverageSourceRootsMapping_fa.Tests
+C:\Моделирование информационных процессов и систем\Lab 2\fa.Tests\obj\Debug\net9.0\fa.Tests.csproj.AssemblyReference.cache
+C:\Моделирование информационных процессов и систем\Lab 2\fa.Tests\obj\Debug\net9.0\fa.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Моделирование информационных процессов и систем\Lab 2\fa.Tests\obj\Debug\net9.0\fa.Tests.AssemblyInfoInputs.cache
+C:\Моделирование информационных процессов и систем\Lab 2\fa.Tests\obj\Debug\net9.0\fa.Tests.AssemblyInfo.cs
+C:\Моделирование информационных процессов и систем\Lab 2\fa.Tests\obj\Debug\net9.0\fa.Tests.csproj.CoreCompileInputs.cache
+C:\Моделирование информационных процессов и систем\Lab 2\fa.Tests\obj\Debug\net9.0\fa.Tests.sourcelink.json
