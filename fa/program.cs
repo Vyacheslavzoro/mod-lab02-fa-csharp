@@ -158,11 +158,10 @@ namespace FiniteAutomata
 
             foreach (var input in inputs)
             {
-                Console.WriteLine($"Input: {input}");
-                Console.WriteLine($"FA1 (one 0, at least one 1): {fa1.Accepts(input)}");
-                Console.WriteLine($"FA2 (odd 0s and 1s): {fa2.Accepts(input)}");
-                Console.WriteLine($"FA3 (contains '11'): {fa3.Accepts(input)}");
-                Console.WriteLine("-----");
+                Console.WriteLine($"FA1 (one 0, at least one 1): {fa1.Run(input)}");
+                Console.WriteLine($"FA2 (odd 0s and 1s): {fa2.Run(input)}");
+                Console.WriteLine($"FA3 (contains '11'): {fa3.Run(input)}");
+
             }
         }
     }
