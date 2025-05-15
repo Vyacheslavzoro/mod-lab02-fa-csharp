@@ -8,160 +8,169 @@ namespace FiniteAutomata
 {
     public class State
     {
-        public string Id { get; }
-        public bool IsFinal { get; }
-        public Dictionary<char, State> Moves { get; }
+        public string Label { get; }
+        public bool Accepting { get; }
+        private Dictionary<char, State> _transitions;
 
-        public State(string id, bool isFinal = false)
+        public State(string label, bool accepting = false)
         {
-            Id = id;
-            IsFinal = isFinal;
-            Moves = new Dictionary<char, State>();
+            Label = label;
+            Accepting = accepting;
+            _transitions = new Dictionary<char, State>();
         }
 
-        public void AddTransition(char symbol, State next)
+        public void Set(char symbol, State target)
         {
-            Moves[symbol] = next;
+            _transitions[symbol] = target;
         }
 
-        public State Next(char input)
+        public State Go(char input)
         {
-            return Moves.ContainsKey(input) ? Moves[input] : null;
+            return _transitions.ContainsKey(input) ? _transitions[input] : null;
         }
     }
 
 
     public class FA1
     {
-        private readonly State _start;
+        private readonly State _entry;
 
         public FA1()
         {
-            var s0 = new State("Start");
-            var s1 = new State("ZeroSeen");
-            var s2 = new State("Accept", true);
-            var sE = new State("Error");
-            var s1n = new State("OneSeen");
+            var start = new State("start");
+            var gotZero = new State("gotZero");
+            var valid = new State("valid", true);
+            var fail = new State("fail");
+            var seenOne = new State("seenOne");
 
-            s0.AddTransition('0', s1);
-            s0.AddTransition('1', s1n);
+            start.Set('0', gotZero);
+            start.Set('1', seenOne);
 
-            s1.AddTransition('0', sE);
-            s1.AddTransition('1', s2);
+            gotZero.Set('0', fail);
+            gotZero.Set('1', valid);
 
-            s1n.AddTransition('0', s2);
-            s1n.AddTransition('1', s1n);
+            seenOne.Set('0', valid);
+            seenOne.Set('1', seenOne);
 
-            s2.AddTransition('0', sE);
-            s2.AddTransition('1', s2);
+            valid.Set('0', fail);
+            valid.Set('1', valid);
 
-            sE.AddTransition('0', sE);
-            sE.AddTransition('1', sE);
+            fail.Set('0', fail);
+            fail.Set('1', fail);
 
-            _start = s0;
+            _entry = start;
         }
 
         public bool? Run(string input)
         {
-            var current = _start;
-            foreach (var symbol in input)
+            var current = _entry;
+            foreach (var ch in input)
             {
-                current = current.Next(symbol);
+                current = current.Go(ch);
                 if (current == null) return null;
             }
-            return current.IsFinal;
+            return current.Accepting;
         }
-
     }
 
-  public class FA2
-  {
+    public class FA2
+    {
         private readonly State _start;
 
         public FA2()
         {
-            var evenEven = new State("00");
-            var oddEven = new State("10");
-            var evenOdd = new State("01");
-            var oddOdd = new State("11", true);
+            var evenEven = new State("evenEven");
+            var oddEven = new State("oddEven");
+            var evenOdd = new State("evenOdd");
+            var oddOdd = new State("oddOdd", true);
 
-            evenEven.AddTransition('0', oddEven);
-            evenEven.AddTransition('1', evenOdd);
+            evenEven.Set('0', oddEven);
+            evenEven.Set('1', evenOdd);
 
-            oddEven.AddTransition('0', evenEven);
-            oddEven.AddTransition('1', oddOdd);
+            oddEven.Set('0', evenEven);
+            oddEven.Set('1', oddOdd);
 
-            evenOdd.AddTransition('0', oddOdd);
-            evenOdd.AddTransition('1', evenEven);
+            evenOdd.Set('0', oddOdd);
+            evenOdd.Set('1', evenEven);
 
-            oddOdd.AddTransition('0', evenOdd);
-            oddOdd.AddTransition('1', oddEven);
+            oddOdd.Set('0', evenOdd);
+            oddOdd.Set('1', oddEven);
 
             _start = evenEven;
         }
 
         public bool? Run(string input)
         {
-            var state = _start;
+            var current = _start;
             foreach (var ch in input)
             {
-                state = state.Next(ch);
-                if (state == null) return null;
+                current = current.Go(ch);
+                if (current == null) return null;
             }
-            return state.IsFinal;
+            return current.Accepting;
         }
     }
-  
-  public class FA3
-  {
-        private readonly State _start;
+
+    public class FA3
+    {
+        private readonly State _initial;
 
         public FA3()
         {
-            var q0 = new State("Init");
-            var q1 = new State("Seen1");
-            var q2 = new State("Seen11", true);
+            var qStart = new State("start");
+            var qOne = new State("one");
+            var qMatch = new State("match", true);
 
-            q0.AddTransition('0', q0);
-            q0.AddTransition('1', q1);
+            qStart.Set('0', qStart);
+            qStart.Set('1', qOne);
 
-            q1.AddTransition('0', q0);
-            q1.AddTransition('1', q2);
+            qOne.Set('0', qStart);
+            qOne.Set('1', qMatch);
 
-            q2.AddTransition('0', q2);
-            q2.AddTransition('1', q2);
+            qMatch.Set('0', qMatch);
+            qMatch.Set('1', qMatch);
 
-            _start = q0;
+            _initial = qStart;
         }
 
         public bool? Run(string input)
         {
-            var state = _start;
-            foreach (var ch in input)
+            State current = _initial;
+            foreach (char symbol in input)
             {
-                state = state.Next(ch);
-                if (state == null) return null;
+                current = current.Go(symbol);
+                if (current == null) return null;
             }
-            return state.IsFinal;
+            return current.Accepting;
         }
     }
 
-  class Program
-  {
+    class Program
+    {
         static void Main(string[] args)
         {
-            var inputs = new[] { "011", "10", "1101", "001", "111" };
+            var testCases = new List<string>
+        {
+            "011", "10", "1101", "001", "111"
+        };
 
-            var fa1 = new FA1();
-            var fa2 = new FA2();
-            var fa3 = new FA3();
+            var automata = new Dictionary<string, Func<string, bool?>>
+        {
+            { "FA1 (exactly one 0, at least one 1)", new FA1().Run },
+            { "FA2 (odd 0s and 1s)", new FA2().Run },
+            { "FA3 (contains '11')", new FA3().Run }
+        };
 
-            foreach (var input in inputs)
+            foreach (var input in testCases)
             {
-                Console.WriteLine($"FA1 (one 0, at least one 1): {fa1.Run(input)}");
-                Console.WriteLine($"FA2 (odd 0s and 1s): {fa2.Run(input)}");
-                Console.WriteLine($"FA3 (contains '11'): {fa3.Run(input)}");
-
+                Console.WriteLine($"\nInput: \"{input}\"");
+                foreach (var kvp in automata)
+                {
+                    var label = kvp.Key;
+                    var runner = kvp.Value;
+                    var result = runner.Invoke(input);
+                    Console.WriteLine($"{label}: {result}");
+                }
             }
         }
     }
