@@ -1,11 +1,15 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using FiniteAutomata;
+using fans;
+
 namespace NET
 {
     [TestClass]
     public class UnitTest1
     {
+        /// <summary>
+        /// ѕровер€ет, что FA1 принимает строку, заканчивающуюс€ на "11".
+        /// </summary>
         [TestMethod]
         public void TestMethod1()
         {
@@ -14,6 +18,10 @@ namespace NET
             bool? result = fa.Run(s);
             Assert.IsTrue(result == true);
         }
+
+        /// <summary>
+        /// ѕровер€ет, что FA1 отклон€ет строку, не заканчивающуюс€ на "11".
+        /// </summary>
         [TestMethod]
         public void TestMethod2()
         {
@@ -21,7 +29,11 @@ namespace NET
             FA1 fa = new FA1();
             bool? result = fa.Run(s);
             Assert.IsTrue(result == false);
-        }   
+        }
+
+        /// <summary>
+        /// ѕроверка работы FA1 со сложной строкой Ч ожидаетс€ отклонение.
+        /// </summary>
         [TestMethod]
         public void TestMethod3()
         {
@@ -29,7 +41,11 @@ namespace NET
             FA1 fa = new FA1();
             bool? result = fa.Run(s);
             Assert.IsTrue(result == false);
-        }  
+        }
+
+        /// <summary>
+        /// ѕровер€ет, что FA1 корректно принимает строку, заканчивающуюс€ на "11".
+        /// </summary>
         [TestMethod]
         public void TestMethod4()
         {
@@ -37,7 +53,11 @@ namespace NET
             FA1 fa = new FA1();
             bool? result = fa.Run(s);
             Assert.IsTrue(result == true);
-        }  
+        }
+
+        /// <summary>
+        /// ѕроверка короткой строки "10" Ч ожидаетс€ прин€тие или отклонение в зависимости от автомата.
+        /// </summary>
         [TestMethod]
         public void TestMethod5()
         {
@@ -45,7 +65,11 @@ namespace NET
             FA1 fa = new FA1();
             bool? result = fa.Run(s);
             Assert.IsTrue(result == true);
-        } 
+        }
+
+        /// <summary>
+        /// ѕроверка, что FA2 отклон€ет строку, не содержащую "0001".
+        /// </summary>
         [TestMethod]
         public void TestMethod6()
         {
@@ -53,7 +77,11 @@ namespace NET
             FA2 fa = new FA2();
             bool? result = fa.Run(s);
             Assert.IsTrue(result == false);
-        }  
+        }
+
+        /// <summary>
+        /// ѕроверка, что FA2 отклон€ет строку без шаблона "0001".
+        /// </summary>
         [TestMethod]
         public void TestMethod7()
         {
@@ -61,7 +89,11 @@ namespace NET
             FA2 fa = new FA2();
             bool? result = fa.Run(s);
             Assert.IsTrue(result == false);
-        }  
+        }
+
+        /// <summary>
+        /// ѕроверка прин€ти€ FA2 строки, содержащей "0001".
+        /// </summary>
         [TestMethod]
         public void TestMethod8()
         {
@@ -69,7 +101,11 @@ namespace NET
             FA2 fa = new FA2();
             bool? result = fa.Run(s);
             Assert.IsTrue(result == true);
-        }  
+        }
+
+        /// <summary>
+        /// ѕроверка прин€ти€ FA2 строки с нужным шаблоном в середине.
+        /// </summary>
         [TestMethod]
         public void TestMethod9()
         {
@@ -77,7 +113,11 @@ namespace NET
             FA2 fa = new FA2();
             bool? result = fa.Run(s);
             Assert.IsTrue(result == true);
-        } 
+        }
+
+        /// <summary>
+        /// ѕроверка, что FA3 принимает строку с равным количеством 0 и 1.
+        /// </summary>
         [TestMethod]
         public void TestMethod10()
         {
@@ -86,6 +126,10 @@ namespace NET
             bool? result = fa.Run(s);
             Assert.IsTrue(result == true);
         }
+
+        /// <summary>
+        /// ѕроверка, что FA3 отклон€ет строку с неравным количеством 0 и 1.
+        /// </summary>
         [TestMethod]
         public void TestMethod11()
         {
@@ -93,6 +137,6 @@ namespace NET
             FA3 fa = new FA3();
             bool? result = fa.Run(s);
             Assert.IsTrue(result == false);
-        }     
+        }
     }
 }
